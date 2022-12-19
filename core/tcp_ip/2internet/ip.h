@@ -55,5 +55,4 @@ void ip_filter(eth_frame_t *frame, uint16_t len);
 
 uint8_t ip_send(eth_frame_t *frame, uint16_t len);
 
-
 #endif /*IP_H*/
