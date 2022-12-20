@@ -37,6 +37,12 @@ void udp_reply(eth_frame_t *frame, uint16_t len);
  */
 void udp_packet(eth_frame_t *frame, uint16_t len);
 
+// send UDP packet
+// fields must be set:
+//	- ip.dst
+//	- udp.src_port
+//	- udp.dst_port
+// uint16_t len is UDP data payload length
 uint8_t udp_send(eth_frame_t *frame, uint16_t len);
 
 #endif /*UDP_H*/

@@ -59,12 +59,22 @@ void udp_packet(eth_frame_t *frame, uint16_t len)
 	}
 }
 
-// send UDP packet
-// fields must be set:
-//	- ip.dst
-//	- udp.src_port
-//	- udp.dst_port
-// uint16_t len is UDP data payload length
+void udp_packet(eth_frame_t *frame, uint16_t len)
+{
+	ip_packet_t *ip = (void*)(frame->data);
+	udp_packet_t *udp = (void*)(ip->data);
+	uint32_t timestamp;
+
+	if(udp->to_port == NTP_LOCAL_PORT)
+	{
+		if((timestamp = ntp_parse_reply(udp->data, len)))
+		{
+			time_offset = timestamp - second_count;
+			ntp_next_update = second_count + 12UL*60*60;
+		}
+	}
+}
+
 uint8_t udp_send(eth_frame_t *frame, uint16_t len)
 {
 	ip_packet_t *ip = (void*)(frame->data);

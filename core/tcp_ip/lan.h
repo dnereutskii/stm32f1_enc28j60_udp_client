@@ -14,6 +14,9 @@
 
 #define IP_PACKET_TTL       64
 
+#define ARP_CACHE_SIZE      3
+
+extern uint8_t net_buf[];
 
 void lan_init();
 void lan_poll();

@@ -23,22 +23,6 @@ ISR(TIMER0_COMP_vect)
 	}
 }
 
-void udp_packet(eth_frame_t *frame, uint16_t len)
-{
-	ip_packet_t *ip = (void*)(frame->data);
-	udp_packet_t *udp = (void*)(ip->data);
-	uint32_t timestamp;
-
-	if(udp->to_port == NTP_LOCAL_PORT)
-	{
-		if((timestamp = ntp_parse_reply(udp->data, len)))
-		{
-			time_offset = timestamp - second_count;
-			ntp_next_update = second_count + 12UL*60*60;
-		}
-	}
-}
-
 int main()
 {
 	uint32_t display_next_update = 0;

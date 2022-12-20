@@ -14,6 +14,7 @@ SOURCES += core/tcp_ip/1network/arp.c
 SOURCES += core/tcp_ip/2internet/ip.c
 SOURCES += core/tcp_ip/2internet/icmp.c
 SOURCES += core/tcp_ip/3transport/udp.c
+SOURCES += core/tcp_ip/4application/ntp.c
 
 # add startup file to build
 SOURCES += ./startup/startup_stm32f103xb.s

@@ -7,8 +7,6 @@
 #define ARP_TYPE_REQUEST    htons(1)
 #define ARP_TYPE_RESPONSE   htons(2)
 
-#define ARP_CACHE_SIZE		3
-
 /**
  * @brief ARP-message structure
  * 
@@ -43,6 +41,15 @@ typedef struct arp_cache_entry {
  */
 void arp_filter(eth_frame_t *frame, uint16_t len);
 
+/**
+ * @brief The function searches for MAC-address for particular IP-address in 
+ *        the ARP-cache.
+ * 
+ * @note  Invalidates net_buffer if not resolved
+ * @param node_ip_addr IP-address of interesting node  
+ * @return uint8_t* Array pointer for MAC-address
+ * @retval NULL if still resolving
+ */
 uint8_t *arp_resolve(uint32_t node_ip_addr);
 
 #endif /*ARP_H*/
