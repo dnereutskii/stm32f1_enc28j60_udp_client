@@ -69,6 +69,13 @@ void eth_reply(eth_frame_t *frame, uint16_t len);
  */
 void eth_filter(eth_frame_t *frame, uint16_t len);
 
+/**
+ * @brief Send Ethernet frame
+ * 
+ * @note  fields must be set: frame.to_addr and frame.type
+ * @param frame Ethernet frame pointer
+ * @param len   Payload length
+ */
 void eth_send(eth_frame_t *frame, uint16_t len);
 
 #endif /* ETHERNET_H */

@@ -72,43 +72,43 @@ void ip_filter(eth_frame_t *frame, uint16_t len)
     }
 }
 
-// send IP packet
-// fields must be set:
-//	- ip.dst
-//	- ip.proto
-// len is IP packet payload length
+/**
+ * @brief Send IP packet
+ * 
+ * @note fields must be set: ip.dst, ip.proto
+ * @param frame 
+ * @param len IP packet payload length
+ * @return uint8_t 
+ */
 uint8_t ip_send(eth_frame_t *frame, uint16_t len)
 {
-	ip_packet_t *ip = (void*)(frame->data);
-	uint32_t route_ip;
-	uint8_t *mac_addr_to;
+    ip_packet_t *ip = (void*)(frame->data);
+    uint32_t route_ip;
+    uint8_t *mac_addr_to;
 
-	// apply route
-	if( ((ip->to_addr ^ ip_addr) & ip_mask) == 0 )
-		route_ip = ip->to_addr;
-	else
-		route_ip = ip_gateway;
+    // apply route
+    if (((ip->to_addr ^ ip_addr) & ip_mask) == 0 ) 
+    	route_ip = ip->to_addr; /* Our subnet */
+    else
+    	route_ip = ip_gateway; /* Another subnet */
+    if(!(mac_addr_to = arp_resolve(route_ip))) return 0; /* resolve MAC */
+    	
+    // send packet
+    len += sizeof(ip_packet_t);
 
-	// resolve mac address
-	if(!(mac_addr_to = arp_resolve(route_ip)))
-		return 0;
+    memcpy(frame->to_addr, mac_addr_to, 6);
+    frame->type = ETH_TYPE_IP;
 
-	// send packet
-	len += sizeof(ip_packet_t);
+    ip->ver_head_len = 0x45;
+    ip->tos = 0;
+    ip->total_len = htons(len);
+    ip->fragment_id = 0;
+    ip->flags_framgent_offset = 0;
+    ip->ttl = IP_PACKET_TTL;
+    ip->cksum = 0;
+    ip->from_addr = ip_addr;
+    ip->cksum = ip_cksum(0, (void*)ip, sizeof(ip_packet_t));
 
-	memcpy(frame->to_addr, mac_addr_to, 6);
-	frame->type = ETH_TYPE_IP;
-
-	ip->ver_head_len = 0x45;
-	ip->tos = 0;
-	ip->total_len = htons(len);
-	ip->fragment_id = 0;
-	ip->flags_framgent_offset = 0;
-	ip->ttl = IP_PACKET_TTL;
-	ip->cksum = 0;
-	ip->from_addr = ip_addr;
-	ip->cksum = ip_cksum(0, (void*)ip, sizeof(ip_packet_t));
-
-	eth_send(frame, len);
-	return 1;
+    eth_send(frame, len);
+    return 1;
 }
