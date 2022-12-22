@@ -52,7 +52,14 @@ uint16_t ip_cksum(uint32_t sum, uint8_t *buf, uint16_t len);
  * @param len   IP-packet length
  */
 void ip_filter(eth_frame_t *frame, uint16_t len);
-
+/**
+ * @brief Send IP packet
+ * 
+ * @note fields must be set: ip.dest, ip.proto
+ * @param frame 
+ * @param len IP packet payload length
+ * @return uint8_t 
+ */
 uint8_t ip_send(eth_frame_t *frame, uint16_t len);
 
 #endif /*IP_H*/

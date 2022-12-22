@@ -72,14 +72,7 @@ void ip_filter(eth_frame_t *frame, uint16_t len)
     }
 }
 
-/**
- * @brief Send IP packet
- * 
- * @note fields must be set: ip.dst, ip.proto
- * @param frame 
- * @param len IP packet payload length
- * @return uint8_t 
- */
+
 uint8_t ip_send(eth_frame_t *frame, uint16_t len)
 {
     ip_packet_t *ip = (void*)(frame->data);
@@ -87,7 +80,7 @@ uint8_t ip_send(eth_frame_t *frame, uint16_t len)
     uint8_t *mac_addr_to;
 
     // apply route
-    if (((ip->to_addr ^ ip_addr) & ip_mask) == 0 ) 
+    if (((ip->to_addr ^ ip_addr) & ip_mask) == 0) 
     	route_ip = ip->to_addr; /* Our subnet */
     else
     	route_ip = ip_gateway; /* Another subnet */
