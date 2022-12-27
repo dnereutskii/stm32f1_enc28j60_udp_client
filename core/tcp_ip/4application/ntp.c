@@ -1,4 +1,11 @@
+#include <stdio.h>
+#include "stm32f1xx.h"
+#include "ethernet.h"
+#include "ip.h"
+#include "udp.h"
 #include "ntp.h"
+
+#define TIMESTAMP_OFFSET 2208988800UL
 
 uint8_t ntp_request(uint32_t srv_ip)
 {
@@ -25,7 +32,7 @@ uint32_t ntp_parse_reply(void *data, uint16_t len)
 	if(len >= sizeof(ntp_message_t))
 	{
 		temp = ntp->xmit_timestamp.seconds;
-		return (ntohl(temp) - 2208988800UL);
+		return (ntohl(temp) - TIMESTAMP_OFFSET);
 	}
 	return 0;
 }

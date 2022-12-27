@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "stm32f1xx.h"
 #include "ethernet.h"
 #include "ip.h"
@@ -77,18 +78,17 @@ void udp_packet(eth_frame_t *frame, uint16_t len)
 
 uint8_t udp_send(eth_frame_t *frame, uint16_t len)
 {
-	ip_packet_t *ip = (void*)(frame->data);
-	udp_packet_t *udp = (void*)(ip->data);
+    ip_packet_t *ip = (void*)(frame->data);
+    udp_packet_t *udp = (void*)(ip->data);
 
-	len += sizeof(udp_packet_t);
+    len += sizeof(udp_packet_t);
 
-	ip->protocol = IP_PROTOCOL_UDP;
-	ip->from_addr = ip_addr;
+    ip->protocol = IP_PROTOCOL_UDP;
+    ip->from_addr = ip_addr;
 
-	udp->len = htons(len);
-	udp->cksum = 0;
-	udp->cksum = ip_cksum(len + IP_PROTOCOL_UDP, 
-		(uint8_t*)udp-8, len+8);
+    udp->len = htons(len);
+    udp->cksum = 0;
+    udp->cksum = ip_cksum(len + IP_PROTOCOL_UDP, (uint8_t*)udp - 8, len + 8);
 
-	return ip_send(frame, len);
+    return ip_send(frame, len);
 }

@@ -2,9 +2,13 @@
 
 #include "lan.h"
 
-#define NTP_SRV_PORT		htons(123)
-#define NTP_LOCAL_PORT		htons(14444)
+#define NTP_SRV_PORT		htons(123)      /*!< NTP Server port*/
+#define NTP_LOCAL_PORT		htons(14444)    /*!< NTP local port */
 
+/**
+ * @brief NTP time format 
+ * 
+ */
 typedef struct ntp_timestamp {
 	uint32_t seconds;
 	uint32_t fraction;
