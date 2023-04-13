@@ -20,7 +20,7 @@ typedef struct arp_message {
     uint16_t type;              /*!< Message type: request or response*/
     uint8_t mac_addr_from[6];   /*!< Source MAC-address */
     uint32_t ip_addr_from;      /*!< Source IP-address */
-    uint8_t mac_addr_to[6];     /*!< Destination MAX-address  */
+    uint8_t mac_addr_to[6];     /*!< Destination MAC-address  */
     uint32_t ip_addr_to;        /*!< Destination IP-address */
 } arp_message_t;
 #pragma pack(pop)
